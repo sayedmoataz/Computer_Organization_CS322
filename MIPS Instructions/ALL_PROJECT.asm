@@ -27,16 +27,16 @@ endline: .asciiz "\n"
  
 
 #Join_String
-enter_1:.asciiz "enter 1st string and pleas end the paragraph -!- : "
-enter_2:.asciiz "enter 2nd string and pleas end the paragraph -!- : "
+enter_1:.asciiz "enter 1st string : "
+enter_2:.asciiz "enter 2nd string : "
 
 #capitalize data
 enter_a : .asciiz  "Enter a string and pleas end the paragraph -!- : "
 capi_s : .asciiz "Capitalize string is : "
 
 #upper_lower data
-enter_f : .asciiz  "enter full string and pleas end the paragraph -!- : "
-input: .space 100
+enter_f : .asciiz  "enter full string : "
+
 newline: .asciiz "\n"
 message1: .asciiz "Paragraph in upper case is : " 
 message2: .asciiz "Paragraph in lower case is : " 
@@ -167,10 +167,6 @@ main:
     		la $a0, str1 #set str1 to cotanits of $a0
     		syscall
     		
-    		la $t9, str1 #laod strl in $t9 to calculate the length  
-    		jal strlen
-    		add $s2,$t8,$0 #set $s2 to $t8
-    		
 		li $v0,4 #laod 4 in $v0 to print string
 		la $a0,enter_2 #laod the enter_a in $a0
 		syscall
@@ -180,9 +176,6 @@ main:
     		la $a0, str2 #set str2 to cotanits of $a0
     		syscall
     		
-    		la $t9, str2 #laod str2 in $t9 to calculate the length  
-    		jal strlen
-    		add $s3,$t8,$0 #set $s3 to $t8
     		############################# use $a0 ans $a1 to load the address of str1
     		#make the load $a0 and $a1 into function
     		jal joinfun #Join_String(str1,str2);
@@ -224,12 +217,9 @@ main:
 		
 		li $v0, 8 #laod 8 in $v0 to read string
     		lw $a1, maxlim #laod maxlim in $a1 (max number of char to read) 
-    		la $a0, input #set str1 to cotanits of $a0
+    		la $a0, str1 #set str1 to cotanits of $a0
     		syscall
     		
-    		la $t9, input #laod strl in $t9 to calculate the length  
-    		jal strlen
-    		add $s2,$t8,$0 #set $s2 to $t8
     		############################# use $a0 or $a1 to load the address of str1
     		#make the load $a0 or $a1 into function
     		#upper_lower(str1);
@@ -326,7 +316,7 @@ Exit_For_loop:
 		syscall 
 		jr $ra
 #############################################
-#function to search substring
+#function substring
 subStringMatch:
     li $t0, 0 #i
     loop1:
@@ -357,58 +347,57 @@ subStringMatch:
     loop1done:
         li $v0, -1
         jr $ra
+        
 
 #############################################
-#function to search Join_String
+#function Join_String
 joinfun: 
-	la $a0 ,str1 
-	la $a1 ,str2 
 	
 	la $a0,str1
 	li $v0,4
 	syscall 
 	
-	la $a1,str2
+	la $a0,str2
 	li $v0,4
 	syscall 
+	jr $ra
 #############################################
-#function to search capitalize
+#functioncapitalize
 capitalize:             # function capitalize
 caploop:                   # loop
-    lb  $a1, str1($t0) # store index of arrary in register t1
-    beq $t0,0,firstletter   # if condiction check if register t0 is equal zero index branch to first letter
+    lb  $a1, str1($t1) # store index of arrary in register t1
+    beq $t1,0,firstletter   # if condiction check if register t0 is equal zero index branch to first letter
     beq $a1,32,space         # if condiction check if register t1 is equal space branch to space
     beq $a1, 0, capexit     # if register t1 is equal null go to exit
    j counter          # jump to counter++
 firstletter:
-    blt  $a1, 'a', capexit  # check if register t1 is less than a branch to exit
-    bgt  $a1, 'z', capexit # check if register t1 is more than a branch to exit
+    blt  $a1, 'a', counter  # check if register t1 is less than a branch to exit
+    bgt  $a1, 'z', counter # check if register t1 is more than a branch to exit
     sub  $a1, $a1, 32    # subtract 32 from the value of old register t1 and add to new register t1
-    sb   $a1, str1($t0) # store the value of register t0 in register t1 to do operation
-    addi $t0, $t0,1      # regiter t0 ++
+    sb   $a1, str1($t1) # store the value of register t0 in register t1 to do operation
+    addi $t1, $t1,1      # regiter t0 ++
     j caploop            # jump to loop
     
 space:
-    addi $t0, $t0,1      # regiter t0 ++
-    lb   $a1, str1($t0) # load the value of register t0 in register t1 to do operation
+    addi $t1, $t1,1      # regiter t0 ++
+    lb   $a1, str1($t1) # load the value of register t0 in register t1 to do operation
     blt  $a1, 'a', counter  # check if register t1 is less than a branch to exit
     bgt  $a1, 'z', counter  # check if register t1 is more than a branch to exit
     sub  $a1, $a1, 32    # subtract 32 from the value of old register t1 and add to new register t1
-    sb   $a1, str1($t0) # store the value of register t0 in register t1 to do operation
+    sb   $a1, str1($t1) # store the value of register t0 in register t1 to do operation
     j caploop            # jump to loop
     
 counter:
-addi $t0, $t0,1          # regiter t0 ++
+addi $t1, $t1,1          # regiter t0 ++
 j caploop                #jump to loop
 
 capexit:
     li $v0, 4            # print string
     la $a0, str1        # print the string that store in array input
     syscall
-    li $v0, 10           # end the program
-    syscall
+    jr $ra
 #############################################
-#function to search upper_lower
+#function upper_lower
 lowerandupper: 
 	uppercase:
 	    li $v0,4        # to print message1
@@ -417,18 +406,21 @@ lowerandupper:
 	    li $t0, 0
 
 	loopuper:
-	    lb $t1, input($t0) # load the value of register t0 in register t1 to do operation
+	    lb $t1,str1($t0) # load the value of register t0 in register t1 to do operation
 	    beq $t1, 0, exit1
 	    blt $t1, 'a', case1 # check if register t1 is less than a branch to counter
 	    bgt $t1, 'z', case1 # check if register t1 is greater than a branch to counter
 	    sub $t1, $t1, 32   # subtract 32 from the value of old register t1 and add to new register t1
-	    sb $t1, input($t0)
+	    sb $t1, str1($t0)
 
 	case1: 
 	    addi $t0, $t0, 1
 	    j loopuper  #jump to loop
 	exit1:
-	    jr $ra
+	    li $v0,4        # to print str1 upercase 
+	    la $a0,str1
+	    syscall
+	    
 			
 	lowarcase:
 	li $v0,4        # to print message2
@@ -437,18 +429,21 @@ lowerandupper:
 	li $t0, 0
 	
 	looplower:
-	    lb $t1, input($t0) # load the value of register t0 in register t1 to do operation
+	    lb $t1, str1($t0) # load the value of register t0 in register t1 to do operation
 	    beq $t1, 0, exit2
 	    blt $t1, 'A', case2 # check if register t1 is less than a branch to counter
 	    bgt $t1, 'Z', case2 # check if register t1 is greater than a branch to counter
 	    addi $t1, $t1, 32     #adding 32 from the value of old register t1 and add to new register t1
-	    sb $t1, input($t0)  #store the value of register t0 in register t1 to do operation
+	    sb $t1, str1($t0)  #store the value of register t0 in register t1 to do operation
 	
 	case2: 
 	    addi $t0, $t0, 1 # regiter t0 ++
 	    j looplower #jump to loop
 	    
 	exit2:
+	    li $v0,4        # to print str1 lowarcase 
+	    la $a0,str1
+	    syscall
 	    jr $ra
 
 #############################################
