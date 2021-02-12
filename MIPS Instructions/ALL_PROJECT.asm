@@ -8,8 +8,8 @@ intro : .asciiz "Welcome at our project \nthis is a program that make some opera
 menu : .asciiz "1 -Search on a specific word/character \n2- find substring \n3- Join 2 strings\n4- Capitalize first letter in each word\n5- Convert all characters in the paragraph to Lower/upper case\n"
 joke :.asciiz "am i joke with u ! ! !\n"
 #search data
-enter_p: .asciiz "enter paragraph and pleas end the paragraph -!- : \n"
-enter_d: .asciiz "enter destination word and pleas end the paragraph -!-  :  "
+enter_p: .asciiz "enter paragraph and please end the paragraph -!- : \n"
+enter_d: .asciiz "enter destination word and please end the paragraph -!-  : \n"
 
 notfound: .asciiz "not found"
 found1: .asciiz "dest of "
@@ -31,8 +31,8 @@ enter_1:.asciiz "enter 1st string : "
 enter_2:.asciiz "enter 2nd string : "
 
 #capitalize data
-enter_a : .asciiz  "Enter a string and pleas end the paragraph -!- : "
-capi_s : .asciiz "Capitalize string is : "
+enter_a : .asciiz  "Enter a string and please end the paragraph -!- :\n"
+finish: .asciiz "your captalize string is:\n"
 
 #upper_lower data
 enter_f : .asciiz  "enter full string : "
@@ -365,33 +365,37 @@ joinfun:
 #functioncapitalize
 capitalize:             # function capitalize
 caploop:                   # loop
-    lb  $a1, str1($t1) # store index of arrary in register t1
-    beq $t1,0,firstletter   # if condiction check if register t0 is equal zero index branch to first letter
-    beq $a1,32,space         # if condiction check if register t1 is equal space branch to space
-    beq $a1, 0, capexit     # if register t1 is equal null go to exit
-   j counter          # jump to counter++
+    lb  $a1, str1($t1) # load index of arrary in register a1
+    beq $t1,0,firstletter   # if condiction check if register t1 is equal zero index branch to first letter
+    beq $a1,32,space         # if condiction check if register a1 is equal space branch to space
+    beq $a1, 0, capexit     # if register a1 is equal null go to exit
+   j counter          # jump to counter
 firstletter:
-    blt  $a1, 'a', counter  # check if register t1 is less than a branch to exit
-    bgt  $a1, 'z', counter # check if register t1 is more than a branch to exit
-    sub  $a1, $a1, 32    # subtract 32 from the value of old register t1 and add to new register t1
-    sb   $a1, str1($t1) # store the value of register t0 in register t1 to do operation
-    addi $t1, $t1,1      # regiter t0 ++
+    blt  $a1, 'a', counter  # check if register a1 is less than a branch to exit
+    bgt  $a1, 'z', counter # check if register a1 is more than a branch to exit
+    sub  $a1, $a1, 32    # subtract 32 from the value of old register a1 and add to new register a1
+    sb   $a1, str1($t1) # store the value of register t1 in register a1 to do operation
+    addi $t1, $t1,1      # regiter t1 increase by 1
     j caploop            # jump to loop
     
 space:
-    addi $t1, $t1,1      # regiter t0 ++
-    lb   $a1, str1($t1) # load the value of register t0 in register t1 to do operation
-    blt  $a1, 'a', counter  # check if register t1 is less than a branch to exit
-    bgt  $a1, 'z', counter  # check if register t1 is more than a branch to exit
-    sub  $a1, $a1, 32    # subtract 32 from the value of old register t1 and add to new register t1
-    sb   $a1, str1($t1) # store the value of register t0 in register t1 to do operation
+    addi $t1, $t1,1      # regiter t1 increase by 1
+    lb   $a1, str1($t1) # load the value of register t1 in register a1 to do operation
+    blt  $a1, 'a', counter  # check if register a1 is less than a branch to exit
+    bgt  $a1, 'z', counter  # check if register a1 is more than a branch to exit
+    sub  $a1, $a1, 32    # subtract 32 from the value of old register a1 and add to new register a1
+    sb   $a1, str1($t1) # store the value of register t1 in register a1 to do operation
     j caploop            # jump to loop
     
 counter:
-addi $t1, $t1,1          # regiter t0 ++
+addi $t1, $t1,1          # regiter t1 increase by 1
 j caploop                #jump to loop
 
 capexit:
+    li $v0, 4            # print string
+    la $a0, finish        # print the string that store in finish
+     syscall 
+     
     li $v0, 4            # print string
     la $a0, str1        # print the string that store in array input
     syscall
