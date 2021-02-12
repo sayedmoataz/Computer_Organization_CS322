@@ -142,25 +142,16 @@ void  capitalize(char str[])
 }
 void upper_lower(char para[])
 {
-    char selection;
-    printf("\nPress (U/L) if you want to lower case (L) or upper case (U) your paragraph:\n ");
-    scanf("%s",&selection);
-    if(selection=='U' || selection=='u')
-    {
-        for(int i=0; i<= strlen(para) ; i++)
-        {
-            if(para[i]>='a'&&para[i]<='z')
-                para[i]=para[i]-32;
-        }
-        printf("\nParagraph in upper case is : %s ",para);
+    for(int i=0; i<= strlen(para) ; i++){
+        if(para[i]>='a'&&para[i]<='z')
+            para[i]=para[i]-32;
     }
-    else if(selection=='L' || selection=='l')
+    printf("\nParagraph in upper case is : %s",para);
+
+    for(int i=0; i<= strlen(para) ; i++)
     {
-        for(int i=0; i<= strlen(para) ; i++)
-        {
-            if(para[i]>='A'&&para[i]<='Z')
-                para[i]=para[i]+32;
-        }
-        printf("\nParagraph in lower case is : %s ",para);
+        if(para[i]>='A'&&para[i]<='Z')
+            para[i]=para[i]+32;
     }
+    printf("\nParagraph in lower case is : %s",para);
 }
