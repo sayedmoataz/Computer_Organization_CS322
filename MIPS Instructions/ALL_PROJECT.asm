@@ -199,10 +199,6 @@ main:
     		j end_system
     		############################# use $a0 or $a1 to load the address of str1
     		#make the load $a0 or $a1 into function
-    		
-    		li $v0,4 #laod 4 in $v0 to print string
-		la $a0,capi_s #laod the enter_a in $a0
-		syscall
 		
 		li $v0,4 #laod 4 in $v0 to print string
 		la $a0,str1 #laod the Array_2 in $a0
