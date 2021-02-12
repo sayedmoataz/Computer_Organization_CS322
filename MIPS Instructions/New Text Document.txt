@@ -1,0 +1,5 @@
+captalize     -> محمد حمدي 
+substring     -> محمد خير 
+upper_lower   -> مصطفى محمد 
+search        -> سيد معتز && كرولوس فايق 
+join          -> شيماء 
