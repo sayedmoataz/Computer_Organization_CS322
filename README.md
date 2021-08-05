@@ -1,13 +1,21 @@
-Faculty of Computers and Information 
-Department of Computer Science 2020/2021
-CS322ComputerOrganization
-Project description
-6- Write a program to allow user to enter a paragraph and do the following operations:
-  #Search on a specific word/character and get all results.
-  #Provide substring functionality Hint: Substring.
-  #Join to strings.
-  #Capitalize first letter in each word.
-  #Convert all characters in the paragraph to Lower/upper case.
+Team Project 
 
-Bonus: Sort all paragraph based on first character in each word (Quick Sort)
-Hints: Sorting Algorithms
+Cousre name: CS322ComputerOrganization
+
+Project description
+
+Write a program to allow user to enter a paragraph and do the following operations:
+
+  1- Search on a specific word/character and get all results.
+  
+  2-Provide substring functionality Hint: Substring.
+  
+  3- Join to strings.
+  
+  4-Capitalize first letter in each word.
+  
+  5-Convert all characters in the paragraph to Lower/upper case.
+
+  Bonus: Sort all paragraph based on first character in each word (Quick Sort)
+    
+    Hints: Sorting Algorithms
